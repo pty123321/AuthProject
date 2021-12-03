@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ProgramModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Avtobus">
+          <Key>
+            <PropertyRef Name="ID_Avtobus" />
+          </Key>
+          <Property Name="ID_Avtobus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Модель" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Номерной_знак" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Количество_мест" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bilet">
+          <Key>
+            <PropertyRef Name="ID_Bilet" />
+          </Key>
+          <Property Name="ID_Bilet" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Место" Type="int" Nullable="false" />
+          <Property Name="Стоимость" Type="int" Nullable="false" />
+          <Property Name="Время" Type="datetime" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Имя" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Отчество" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Паспорт" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Льготы" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dispetcher">
+          <Key>
+            <PropertyRef Name="ID_Dispetcher" />
+          </Key>
+          <Property Name="ID_Dispetcher" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Имя" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Отчество" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Дата_рождения" Type="datetime" Nullable="false" />
+          <Property Name="Адрес" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Marshrut">
+          <Key>
+            <PropertyRef Name="ID_Marshrut" />
+          </Key>
+          <Property Name="ID_Marshrut" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер_маршрута" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Пункт_назначения" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Район" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Область" Type="varbinary" MaxLength="100" Nullable="false" />
+          <Property Name="Расстояние" Type="int" Nullable="false" />
+          <Property Name="Вес" Type="int" />
+          <Property Name="Время_отправки" Type="datetime" Nullable="false" />
+          <Property Name="Время_прибытия" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Perevozka">
+          <Key>
+            <PropertyRef Name="ID_Perevozka" />
+          </Key>
+          <Property Name="ID_Perevozka" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ID_Marshrut" Type="int" Nullable="false" />
+          <Property Name="ID_Bilet" Type="int" Nullable="false" />
+          <Property Name="ID_Dispetcher" Type="int" Nullable="false" />
+          <Property Name="ID_Avtobus" Type="int" Nullable="false" />
+          <Property Name="ID_Voditel" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Registratciya">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Voditel">
+          <Key>
+            <PropertyRef Name="ID_Voditel" />
+          </Key>
+          <Property Name="ID_Voditel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Имя" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Отчество" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Дата_рождения" Type="datetime" Nullable="false" />
+          <Property Name="Паспорт" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Perevozka_Avtobus">
+          <End Role="Avtobus" Type="Self.Avtobus" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avtobus">
+              <PropertyRef Name="ID_Avtobus" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Avtobus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Bilet">
+          <End Role="Bilet" Type="Self.Bilet" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bilet">
+              <PropertyRef Name="ID_Bilet" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Bilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Dispetcher">
+          <End Role="Dispetcher" Type="Self.Dispetcher" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispetcher">
+              <PropertyRef Name="ID_Dispetcher" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Dispetcher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Marshrut">
+          <End Role="Marshrut" Type="Self.Marshrut" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marshrut">
+              <PropertyRef Name="ID_Marshrut" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Marshrut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Voditel">
+          <End Role="Voditel" Type="Self.Voditel" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voditel">
+              <PropertyRef Name="ID_Voditel" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Voditel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ProgramModelContainer">
+          <EntitySet Name="Avtobus" EntityType="Self.Avtobus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bilet" EntityType="Self.Bilet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dispetcher" EntityType="Self.Dispetcher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marshrut" EntityType="Self.Marshrut" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Perevozka" EntityType="Self.Perevozka" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registratciya" EntityType="Self.Registratciya" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Voditel" EntityType="Self.Voditel" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Perevozka_Avtobus" Association="Self.FK_Perevozka_Avtobus">
+            <End Role="Avtobus" EntitySet="Avtobus" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Bilet" Association="Self.FK_Perevozka_Bilet">
+            <End Role="Bilet" EntitySet="Bilet" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Dispetcher" Association="Self.FK_Perevozka_Dispetcher">
+            <End Role="Dispetcher" EntitySet="Dispetcher" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Marshrut" Association="Self.FK_Perevozka_Marshrut">
+            <End Role="Marshrut" EntitySet="Marshrut" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Voditel" Association="Self.FK_Perevozka_Voditel">
+            <End Role="Voditel" EntitySet="Voditel" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProgramModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Avtobus">
+          <Key>
+            <PropertyRef Name="ID_Avtobus" />
+          </Key>
+          <Property Name="ID_Avtobus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Модель" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Номерной_знак" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Количество_мест" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Perevozka" Relationship="Self.FK_Perevozka_Avtobus" FromRole="Avtobus" ToRole="Perevozka" />
+        </EntityType>
+        <EntityType Name="Bilet">
+          <Key>
+            <PropertyRef Name="ID_Bilet" />
+          </Key>
+          <Property Name="ID_Bilet" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Место" Type="Int32" Nullable="false" />
+          <Property Name="Стоимость" Type="Int32" Nullable="false" />
+          <Property Name="Время" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Фамилия" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Отчество" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Паспорт" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Льготы" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Perevozka" Relationship="Self.FK_Perevozka_Bilet" FromRole="Bilet" ToRole="Perevozka" />
+        </EntityType>
+        <EntityType Name="Dispetcher">
+          <Key>
+            <PropertyRef Name="ID_Dispetcher" />
+          </Key>
+          <Property Name="ID_Dispetcher" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Отчество" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Дата_рождения" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Адрес" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Perevozka" Relationship="Self.FK_Perevozka_Dispetcher" FromRole="Dispetcher" ToRole="Perevozka" />
+        </EntityType>
+        <EntityType Name="Marshrut">
+          <Key>
+            <PropertyRef Name="ID_Marshrut" />
+          </Key>
+          <Property Name="ID_Marshrut" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер_маршрута" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Пункт_назначения" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Район" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Область" Type="Binary" MaxLength="100" FixedLength="false" Nullable="false" />
+          <Property Name="Расстояние" Type="Int32" Nullable="false" />
+          <Property Name="Вес" Type="Int32" />
+          <Property Name="Время_отправки" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Время_прибытия" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Perevozka" Relationship="Self.FK_Perevozka_Marshrut" FromRole="Marshrut" ToRole="Perevozka" />
+        </EntityType>
+        <EntityType Name="Perevozka">
+          <Key>
+            <PropertyRef Name="ID_Perevozka" />
+          </Key>
+          <Property Name="ID_Perevozka" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Marshrut" Type="Int32" Nullable="false" />
+          <Property Name="ID_Bilet" Type="Int32" Nullable="false" />
+          <Property Name="ID_Dispetcher" Type="Int32" Nullable="false" />
+          <Property Name="ID_Avtobus" Type="Int32" Nullable="false" />
+          <Property Name="ID_Voditel" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Avtobus" Relationship="Self.FK_Perevozka_Avtobus" FromRole="Perevozka" ToRole="Avtobus" />
+          <NavigationProperty Name="Bilet" Relationship="Self.FK_Perevozka_Bilet" FromRole="Perevozka" ToRole="Bilet" />
+          <NavigationProperty Name="Dispetcher" Relationship="Self.FK_Perevozka_Dispetcher" FromRole="Perevozka" ToRole="Dispetcher" />
+          <NavigationProperty Name="Marshrut" Relationship="Self.FK_Perevozka_Marshrut" FromRole="Perevozka" ToRole="Marshrut" />
+          <NavigationProperty Name="Voditel" Relationship="Self.FK_Perevozka_Voditel" FromRole="Perevozka" ToRole="Voditel" />
+        </EntityType>
+        <EntityType Name="Registratciya">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Voditel">
+          <Key>
+            <PropertyRef Name="ID_Voditel" />
+          </Key>
+          <Property Name="ID_Voditel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Отчество" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Дата_рождения" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Паспорт" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Perevozka" Relationship="Self.FK_Perevozka_Voditel" FromRole="Voditel" ToRole="Perevozka" />
+        </EntityType>
+        <Association Name="FK_Perevozka_Avtobus">
+          <End Role="Avtobus" Type="Self.Avtobus" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avtobus">
+              <PropertyRef Name="ID_Avtobus" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Avtobus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Bilet">
+          <End Role="Bilet" Type="Self.Bilet" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bilet">
+              <PropertyRef Name="ID_Bilet" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Bilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Dispetcher">
+          <End Role="Dispetcher" Type="Self.Dispetcher" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispetcher">
+              <PropertyRef Name="ID_Dispetcher" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Dispetcher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Marshrut">
+          <End Role="Marshrut" Type="Self.Marshrut" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marshrut">
+              <PropertyRef Name="ID_Marshrut" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Marshrut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Perevozka_Voditel">
+          <End Role="Voditel" Type="Self.Voditel" Multiplicity="1" />
+          <End Role="Perevozka" Type="Self.Perevozka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voditel">
+              <PropertyRef Name="ID_Voditel" />
+            </Principal>
+            <Dependent Role="Perevozka">
+              <PropertyRef Name="ID_Voditel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProgramEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Avtobus" EntityType="Self.Avtobus" />
+          <EntitySet Name="Bilet" EntityType="Self.Bilet" />
+          <EntitySet Name="Dispetcher" EntityType="Self.Dispetcher" />
+          <EntitySet Name="Marshrut" EntityType="Self.Marshrut" />
+          <EntitySet Name="Perevozka" EntityType="Self.Perevozka" />
+          <EntitySet Name="Registratciya" EntityType="Self.Registratciya" />
+          <EntitySet Name="Voditel" EntityType="Self.Voditel" />
+          <AssociationSet Name="FK_Perevozka_Avtobus" Association="Self.FK_Perevozka_Avtobus">
+            <End Role="Avtobus" EntitySet="Avtobus" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Bilet" Association="Self.FK_Perevozka_Bilet">
+            <End Role="Bilet" EntitySet="Bilet" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Dispetcher" Association="Self.FK_Perevozka_Dispetcher">
+            <End Role="Dispetcher" EntitySet="Dispetcher" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Marshrut" Association="Self.FK_Perevozka_Marshrut">
+            <End Role="Marshrut" EntitySet="Marshrut" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Perevozka_Voditel" Association="Self.FK_Perevozka_Voditel">
+            <End Role="Voditel" EntitySet="Voditel" />
+            <End Role="Perevozka" EntitySet="Perevozka" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ProgramModelContainer" CdmEntityContainer="ProgramEntities2">
+          <EntitySetMapping Name="Avtobus">
+            <EntityTypeMapping TypeName="ProgramModel.Avtobus">
+              <MappingFragment StoreEntitySet="Avtobus">
+                <ScalarProperty Name="ID_Avtobus" ColumnName="ID_Avtobus" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Модель" ColumnName="Модель" />
+                <ScalarProperty Name="Номерной_знак" ColumnName="Номерной_знак" />
+                <ScalarProperty Name="Количество_мест" ColumnName="Количество_мест" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bilet">
+            <EntityTypeMapping TypeName="ProgramModel.Bilet">
+              <MappingFragment StoreEntitySet="Bilet">
+                <ScalarProperty Name="ID_Bilet" ColumnName="ID_Bilet" />
+                <ScalarProperty Name="Место" ColumnName="Место" />
+                <ScalarProperty Name="Стоимость" ColumnName="Стоимость" />
+                <ScalarProperty Name="Время" ColumnName="Время" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Паспорт" ColumnName="Паспорт" />
+                <ScalarProperty Name="Льготы" ColumnName="Льготы" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dispetcher">
+            <EntityTypeMapping TypeName="ProgramModel.Dispetcher">
+              <MappingFragment StoreEntitySet="Dispetcher">
+                <ScalarProperty Name="ID_Dispetcher" ColumnName="ID_Dispetcher" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата_рождения" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Marshrut">
+            <EntityTypeMapping TypeName="ProgramModel.Marshrut">
+              <MappingFragment StoreEntitySet="Marshrut">
+                <ScalarProperty Name="ID_Marshrut" ColumnName="ID_Marshrut" />
+                <ScalarProperty Name="Номер_маршрута" ColumnName="Номер_маршрута" />
+                <ScalarProperty Name="Пункт_назначения" ColumnName="Пункт_назначения" />
+                <ScalarProperty Name="Район" ColumnName="Район" />
+                <ScalarProperty Name="Область" ColumnName="Область" />
+                <ScalarProperty Name="Расстояние" ColumnName="Расстояние" />
+                <ScalarProperty Name="Вес" ColumnName="Вес" />
+                <ScalarProperty Name="Время_отправки" ColumnName="Время_отправки" />
+                <ScalarProperty Name="Время_прибытия" ColumnName="Время_прибытия" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perevozka">
+            <EntityTypeMapping TypeName="ProgramModel.Perevozka">
+              <MappingFragment StoreEntitySet="Perevozka">
+                <ScalarProperty Name="ID_Perevozka" ColumnName="ID_Perevozka" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="ID_Marshrut" ColumnName="ID_Marshrut" />
+                <ScalarProperty Name="ID_Bilet" ColumnName="ID_Bilet" />
+                <ScalarProperty Name="ID_Dispetcher" ColumnName="ID_Dispetcher" />
+                <ScalarProperty Name="ID_Avtobus" ColumnName="ID_Avtobus" />
+                <ScalarProperty Name="ID_Voditel" ColumnName="ID_Voditel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registratciya">
+            <EntityTypeMapping TypeName="ProgramModel.Registratciya">
+              <MappingFragment StoreEntitySet="Registratciya">
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Voditel">
+            <EntityTypeMapping TypeName="ProgramModel.Voditel">
+              <MappingFragment StoreEntitySet="Voditel">
+                <ScalarProperty Name="ID_Voditel" ColumnName="ID_Voditel" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата_рождения" />
+                <ScalarProperty Name="Паспорт" ColumnName="Паспорт" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
